@@ -1,5 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import urllib.request
 import requests
+import os, sys
+from zipfile import ZipFile
 from urllib.error import URLError, HTTPError, ContentTooShortError
 
 RED = '\x1b[91m'
@@ -13,7 +17,6 @@ ENDC = '\033[0m'
 def file_download():
     zip_file_url = "http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_megase.zip"
     print(GREEN + 'Downloading: {0}'.format(zip_file_url) + ENDC)
-    # r = requests.get(zip_file_url, stream=True)
     try:
         r = requests.get(zip_file_url, stream=True)
         if r.status_code != 200:
@@ -22,7 +25,12 @@ def file_download():
         with open('D_megase.zip', 'wb') as f:
             f.write(r.content)
 
-        # z = ZipFile('D_megase.zip', 'r')
+        z = ZipFile('D_megase.zip', 'r')
+        print(GREEN + " * Extracting new version..." +ENDC)
+        z.extractall(path='./data/')
+        z.close()
+        os.remove('D_megase.zip')
+        print(GREEN + " * Replacing the current file with the new file..."  + ENDC)
     except (URLError, HTTPError, ContentTooShortError) as e:
         print(RED + " * Error: Download error: ",e.reason + ENDC)
 
