@@ -42,7 +42,22 @@ def load_file():
     html = f.read()
     f.close()
     soup = BeautifulSoup(html, 'html.parser')
-    print(soup.prettify())
+    total_by_numbers(soup)
+    # print(soup.prettify())
+
+def total_by_numbers(soup):
+    th = soup.find_all('th')
+    tr = soup.find_all('tr')
+    # print(len(th))
+
+    # for col in range(len(th)):
+    #     print('{:<30} - '.format(th[col].text))
+
+    for row in range(2,len(tr)):
+        th = tr[row].td.text
+        print(th)
+    
+    
 
 
 def download(url, user_agent='wswp', num_retries=2):
@@ -65,4 +80,5 @@ def download(url, user_agent='wswp', num_retries=2):
 # if (html != None):
 #     print(html)
 
-file_download()
+# file_download()
+load_file()
