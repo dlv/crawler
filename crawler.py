@@ -3,6 +3,7 @@
 import urllib.request
 import requests
 import os, sys
+from bs4 import BeautifulSoup
 from zipfile import ZipFile
 from urllib.error import URLError, HTTPError, ContentTooShortError
 
@@ -31,8 +32,17 @@ def file_download():
         z.close()
         os.remove('D_megase.zip')
         print(GREEN + " * Replacing the current file with the new file..."  + ENDC)
+        load_file()    
     except (URLError, HTTPError, ContentTooShortError) as e:
         print(RED + " * Error: Download error: ",e.reason + ENDC)
+
+
+def load_file():
+    f = open("data/D_MEGA.HTM", "rb")
+    html = f.read()
+    f.close()
+    soup = BeautifulSoup(html, 'html.parser')
+    print(soup.prettify())
 
 
 def download(url, user_agent='wswp', num_retries=2):
